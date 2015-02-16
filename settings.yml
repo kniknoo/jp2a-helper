@@ -1,0 +1,7 @@
+---
+:colors: true
+:fill: false
+:border: false
+:invert: false
+:chars: "   ..,,::;()1IO0#"
+:width: '100'

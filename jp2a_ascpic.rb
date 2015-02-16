@@ -4,15 +4,15 @@ module AsciiPic
     include Output
     include Interface
     def initialize
-      @path = "~/Pictures/"
+      read_settings
+      @path = "#{$USERHOME}/Pictures/"
       @filename = "headshot2"
-      @outformat = ""
-      @options = {
-            colors: false,
-            fill: false,
-            invert: false,
+      @options ||= {
+            colors: true,
+            fill: true,
+            border: true,
+            invert: true,
             chars: "   ...,;:clodxhO0HXNWM",
-            border: false,
             width: 40,
        }
        setargs
@@ -22,7 +22,7 @@ module AsciiPic
       old = @path
       puts "Current Path: #{@path}"
       puts "Set path"
-      print "~/"
+      print "#{$USERHOME}/"
       clean_input("path")
       puts "Path set to #{@path}" unless @path == old
     end

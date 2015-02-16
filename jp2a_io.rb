@@ -12,7 +12,7 @@ module Input
         @filename = input
       when "path"
         input << "/" unless input[-1] == "/"
-        @path = "~/#{input}"
+        @path = "#{$USERHOME}/#{input}"
       when "chars"
         input.delete!("\'\"\`")
         @options[:chars] = input
@@ -23,6 +23,10 @@ module Input
           @options[:width] = input
         end
     end
+  end
+  
+  def read_settings
+    @options = YAML.load(File.open("settings.yml"))
   end
 end
 
@@ -44,6 +48,7 @@ module  Output
   end
     
   def save_file(ext)
+    @outformat = ""
     case ext
       when "html" then @outformat = "--html > " 
       when "pdf" then @outformat = "--html | wkhtmltopdf - "
@@ -59,5 +64,9 @@ module  Output
     system "clear"
     process
     puts @ansioutput
+  end
+  
+  def write_settings
+    File.open("settings.yml", "w") {|file| file.write(@options.to_yaml)}
   end
 end

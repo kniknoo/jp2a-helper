@@ -41,7 +41,7 @@ module Interface
         when "s" then set_chars
         when "d" then set_path
         when "n" then set_file
-        when "q" then $running = 0; system "clear"
+        when "q" then $running = 0; write_settings; system "clear"
         else
           system "clear"
           puts "Invalid Selection"

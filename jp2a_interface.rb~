@@ -1,6 +1,6 @@
 module Interface
   def display_status
-    puts "Working on: ~/#{@path}/#{@filename}.jpg"
+    puts "Working on: #{@path}#{@filename}.jpg"
     setargs
     puts "Arguments: #{@args.join(' ')}"
   end
