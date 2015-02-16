@@ -16,28 +16,63 @@ class Ascpic
   end
   
   def set_path
+    old = @path
     puts "Current Path: ~/#{@path}/"
     puts "Set path"
     print "~/"
-    path = gets.chomp
-    path = path[0...-1] if path[-1] == "/"
-    @path = path unless path == ""
-    system "clear"
-    puts "Path set to ~/#{@path}/"
+    clean_input("path")
+    puts "Path set to ~/#{@path}/" unless @path == old
   end
   
   def set_file
+    old = @filename
     puts "Current Filename: #{@filename}.jpg"
     print "Set Filename:"
-    filename = gets.chomp
-    filename = filename[0...-4] if filename[-4..-1] == ".jpg"
-    if filename[-4] == "." 
-      puts "Wrong file type: #{filename[-4..-1]}"
-    else  
-      @filename = filename unless filename == ""
-    end
+    clean_input("filename")
+    puts  "File name set to #{@filename}.jpg" unless @filename == old
+  end
+  
+  def set_chars
+    old = @options[:chars]
+    puts "Current Character list: #{@options[:chars]}"
+    puts "Press Enter to keep this list or"
+    print "Select a new list of characters:"
+    clean_input("chars")
+    puts "Characters set to: #{@options[:chars]}" unless @options[:chars] == old
+  end
+  
+  def set_width
+    old = @options[:width]
+    puts "Width is currently: #{@options[:width]}"
+    print "Pick a new width:"
+    clean_input("width")
+    puts "Width set to #{@options[:width]}" unless @options[:width] == old
+  end
+  
+  def clean_input(mode)
+    input = gets.chomp
     system "clear"
-    puts "File name set to #{@filename}.jpg"
+    if input == ""
+      puts "Cancelled"
+      return
+    end
+    case mode
+      when "filename"
+        input = input[0...-4] if input[-4] == "."
+        @filename = input
+      when "path"
+        input = input[0...-1] if input[-1] == "/"
+        @path = input
+      when "chars"
+        input.delete!("\'\"\`")
+        @options[:chars] = input
+      when "width"
+        if input.to_i == 0 
+          puts "Invalid Number" 
+        else 
+          @options[:width] = input
+        end
+    end
   end
   
   def save_file(ext)
@@ -62,34 +97,6 @@ class Ascpic
     @options[option.to_sym] = !@options[option.to_sym]
     system "clear"
     puts "#{option.capitalize}: #{@options[option.to_sym]}"
-  end
-  
-  def set_width
-    puts "Width is currently: #{@options[:width]}"
-    print "Pick a new width:"
-    width = gets.chomp.to_i
-    system "clear"
-    if width == 0
-      puts "Invalid Number"
-      return
-    else
-      @options[:width] = width
-      puts "Width set to #{@options[:width]}"
-    end
-  end
-  
-  def set_chars
-    puts "Current Character list: #{@options[:chars]}"
-    puts "Press Enter to keep this list or"
-    print "Select a new list of characters:"
-    charlist = gets.chomp
-    system "clear"
-    charlist.delete!("\'") if charlist.include?("\'")
-    charlist.delete!("\"") if charlist.include?("\"")
-    charlist.delete!("\`") if charlist.include?("\`")
-    return if charlist == ""
-    @options[:chars] = charlist
-    puts "Character set changed to: #{@options[:chars]}"
   end
   
   def display_status
@@ -157,6 +164,7 @@ while $running == 1
     when "n" then ascpic.set_file
     when "q" then $running = 0; system "clear"
     else
+      system "clear"
       puts "Invalid Selection"
   end
 end
