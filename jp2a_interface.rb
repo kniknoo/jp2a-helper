@@ -1,7 +1,7 @@
 module Interface
   def display_status
-    puts "Working on: #{@path}#{@filename}.jpg"
     setargs
+    puts "Working on: #{@path}#{@filename}.jpg"
     puts "Arguments: #{@args.join(' ')}"
   end
   

@@ -15,7 +15,6 @@ module AsciiPic
             chars: "   ...,;:clodxhO0HXNWM",
             width: 40,
        }
-       setargs
     end
     
     def set_path
